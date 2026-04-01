@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>小雨织诗</title>
+    <title>鱼泡机</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
@@ -21,12 +21,12 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
 
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #1a1a1a; overflow: hidden; }
+         body { margin: 0; padding: 0; width: 100vw; height: 100vh; background-color: #000; overflow: hidden; }
 
         #iphone {
-            width: 390px; height: 844px; background-image: var(--bg-image); background-size: cover; background-position: center;
-            border-radius: 45px; border: 8px solid #2c2c2c; position: relative; overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5); transform-origin: center;
+            width: 100%; height: 100%; background-image: var(--bg-image); background-size: cover; background-position: center;
+            border-radius: 0; border: none; position: relative; overflow: hidden;
+            box-shadow: none; transform: none !important;
         }
 
         #ios-notification {
@@ -42,10 +42,9 @@
 
         .glass { background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
 
-        /* 主屏幕滑动容器样式 */
         #home-screen-wrapper {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            padding-top: 60px; padding-bottom: 110px;
+            padding-top: calc(60px + env(safe-area-inset-top)); padding-bottom: calc(110px + env(safe-area-inset-bottom));
             display: flex; flex-direction: column; z-index: 10;
         }
         #home-screen {
@@ -72,7 +71,6 @@
         .photo-container img { width: 100%; height: 100%; object-fit: cover; }
         .apps-grid { width: 48%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; }
         
-        /* 1x4 应用矩阵样式 */
         .apps-grid-1x4 { width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
         .apps-grid-1x4 .app-icon { aspect-ratio: 1; }
 
@@ -80,11 +78,7 @@
         .app-icon:active { transform: scale(0.9); }
         .app-icon svg { width: 26px; height: 26px; margin-bottom: 6px; stroke-width: 1.5; }
         
-        /* 分页指示器 - 固定在 Dock 栏上方 */
-        .pagination-dots { 
-            position: absolute; bottom: 110px; left: 0; width: 100%;
-            display: flex; justify-content: center; gap: 8px; z-index: 20; pointer-events: none;
-        }
+        .pagination-dots { position: absolute; bottom: 110px; left: 0; width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 20; pointer-events: none; }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.3s; }
         .dot.active { background: rgba(255,255,255,0.9); }
 
@@ -98,7 +92,7 @@
         .app-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--chat-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 50; display: none; flex-direction: column; padding-top: 40px; transform: translateX(100%); transition: transform 0.3s ease; }
         .app-view.active { display: flex; transform: translateX(0); }
         
-        .app-header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.5); flex-shrink: 0; user-select: none; }
+        .app-header { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; padding-top: calc(15px + env(safe-area-inset-top)); border-bottom: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.5); flex-shrink: 0; user-select: none; }
         .app-header > div:nth-child(2) { position: absolute; left: 50%; transform: translateX(-50%); font-size: 16px; font-weight: bold; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%; text-align: center; pointer-events: none; }
         .app-header > div:first-child, .app-header > div:nth-child(3) { position: relative; z-index: 10; }
 
@@ -194,7 +188,6 @@
         
         .section-title { font-size: 14px; font-weight: bold; color: var(--text-color); margin: 15px 0 10px; border-left: 3px solid #007aff; padding-left: 8px; }
 
-        /* 俄罗斯方块专属样式 */
         .tetris-controls { display: grid; grid-template-columns: 60px 60px 60px; grid-template-rows: 60px 60px; gap: 15px; justify-content: center; margin-top: 20px; }
         .tetris-controls div { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0,0,0,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; color: #333; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); user-select: none; touch-action: manipulation; transition: transform 0.1s, background 0.1s; }
         .tetris-controls div:active { transform: scale(0.9); background: #e0e0e0; }
@@ -203,7 +196,6 @@
         .tetris-controls .btn-down { grid-column: 2; grid-row: 2; }
         .tetris-controls .btn-right { grid-column: 3; grid-row: 2; }
 
-        /* 微博专属样式 */
         .weibo-tab-bar { display: flex; justify-content: space-around; align-items: center; height: 60px; background: rgba(255,255,255,0.9); border-top: 1px solid rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0; padding-bottom: 10px; }
         .weibo-tab-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #888; cursor: pointer; flex: 1; user-select: none; transition: opacity 0.1s; }
         .weibo-tab-item:active { opacity: 0.6; }
@@ -242,7 +234,6 @@
         .refresh-btn:active { opacity: 0.6; }
         .refresh-btn.disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Chat 列表下拉菜单样式 */
         .dropdown-menu { position: absolute; top: 50px; right: 15px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 100; display: none; flex-direction: column; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); }
         .dropdown-menu.active { display: flex; }
         .dropdown-item { padding: 12px 20px; font-size: 14px; color: var(--text-color); border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; gap: 10px; white-space: nowrap; user-select: none; transition: background 0.1s; }
@@ -257,7 +248,6 @@
         .chat-action-btn.pin { background: #f0ad4e; }
         .chat-action-btn.delete { background: #ff3b30; }
 
-        /* 特殊消息卡片样式 */
         .red-packet-card { background: #fa9d3b; color: white; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 12px; margin-top: 5px; width: 220px; box-shadow: 0 2px 5px rgba(250,157,59,0.3); }
         .red-packet-card .rp-icon { font-size: 28px; background: rgba(255,255,255,0.2); width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 8px; }
         .red-packet-card .rp-info { flex: 1; overflow: hidden; }
@@ -270,7 +260,6 @@
         .transfer-card .tf-amt { font-size: 16px; font-weight: bold; margin-bottom: 2px; }
         .transfer-card .tf-msg { font-size: 12px; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 表情包面板 */
         .sticker-panel { position: absolute; bottom: 0; left: 0; width: 100%; height: 300px; background: #f5f5f5; border-top-left-radius: 20px; border-top-right-radius: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s ease; z-index: 80; display: flex; flex-direction: column; }
         .sticker-panel.active { transform: translateY(0); }
         .sticker-tabs { display: flex; overflow-x: auto; background: #fff; border-bottom: 1px solid #eee; padding: 0 10px; border-top-left-radius: 20px; border-top-right-radius: 20px; align-items: center; }
@@ -283,7 +272,6 @@
         .sticker-item:active { transform: scale(0.9); background: rgba(0,0,0,0.05); }
         .sticker-delete-btn { position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: #ff3b30; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; cursor: pointer; z-index: 10; }
 
-        /* 角色状态栏美化样式 */
         .state-panel-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
         .state-panel-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 10px; background: #fff; }
         .state-item { background: var(--item-bg); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 5px; }
@@ -291,17 +279,50 @@
         .state-item-title svg { width: 14px; height: 14px; color: #007aff; }
         .state-item-content { font-size: 14px; color: var(--text-color); line-height: 1.4; }
 
-        /* @ 菜单样式 */
         .at-menu-item { padding: 12px 15px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .at-menu-item:active { background: rgba(0,0,0,0.05); }
         .at-menu-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
         .at-menu-item span { font-size: 14px; color: var(--text-color); }
+
+       /* 论坛专有样式 */
+        .forum-tab-bar { display: flex; justify-content: space-around; align-items: center; height: 60px; background: rgba(255,255,255,0.9); border-top: 1px solid rgba(0,0,0,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0; padding-bottom: 10px; }
+        .forum-tab-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #888; cursor: pointer; flex: 1; user-select: none; transition: opacity 0.1s; }
+        .forum-tab-item.active { color: #007aff; }
+        .forum-tab-item svg { width: 22px; height: 22px; margin-bottom: 3px; }
+        .forum-content-area { flex: 1; overflow-y: auto; padding: 15px; display: none; position: relative; background: #f2f2f6; }
+        .forum-content-area.active { display: block; }
+        
+        .forum-post { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; cursor: pointer; transition: transform 0.1s; }
+        .forum-post:active { transform: scale(0.98); }
+        .forum-post-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .forum-post-avatar { width: 36px; height: 36px; border-radius: 8px; margin-right: 10px; object-fit: cover; background: #eee; }
+        .forum-post-name { font-weight: bold; font-size: 14px; color: var(--text-color); display: flex; align-items: center; gap: 5px; }
+        .forum-tag-anon { background: #333; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: normal; }
+        .forum-post-time { font-size: 11px; color: #888; margin-top: 2px; }
+        .forum-post-title { font-size: 16px; font-weight: bold; color: var(--text-color); margin-bottom: 5px; }
+        .forum-post-content { font-size: 14px; color: #444; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .forum-post-content.full { display: block; }
+        .forum-thoughts { font-size: 12px; color: #888; font-style: italic; background: #f9f9f9; padding: 8px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid #ccc; }
+        
+        .forum-post-footer { display: flex; justify-content: space-between; margin-top: 10px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; color: #888; font-size: 12px; }
+        .forum-action-btn { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
+        .forum-action-btn.liked { color: #007aff; }
+        .forum-action-btn svg { width: 16px; height: 16px; }
+        
+        .forum-comments-preview { background: #f9f9f9; border-radius: 8px; padding: 10px; margin-top: 10px; }
+        .forum-comment-item { font-size: 13px; margin-bottom: 6px; line-height: 1.4; color: #333; }
+        .forum-comment-item:last-child { margin-bottom: 0; }
+        .forum-comment-author { font-weight: bold; color: #007aff; margin-right: 5px; }
+        .forum-comment-more { font-size: 12px; color: #007aff; margin-top: 5px; cursor: pointer; text-align: center; }
+
+        /* 详情页底部评论栏 */
+        .forum-detail-bottom { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 15px 25px; background: rgba(255,255,255,0.95); border-top: 1px solid rgba(0,0,0,0.1); display: flex; gap: 10px; align-items: center; z-index: 10; }
+        .forum-detail-bottom input { flex: 1; margin-bottom: 0; border-radius: 20px; padding: 10px 15px; border: 1px solid #ddd; background: #f5f5f5; }
     </style>
 </head>
 <body>
 
 <div id="iphone">
-    <!-- 全局 iOS 通知横幅 -->
     <div id="ios-notification">
         <img id="notif-icon" src="https://api.dicebear.com/7.x/shapes/svg?seed=app" alt="icon">
         <div class="notif-content">
@@ -310,7 +331,6 @@
         </div>
     </div>
 
-    <!-- 自定义 Alert 弹窗 -->
     <div id="custom-alert-modal" class="modal-overlay" style="z-index: 9999;">
         <div class="modal-content" style="max-width: 300px; text-align: center; padding: 25px 20px 20px;">
             <div id="custom-alert-msg" style="font-size: 15px; color: var(--text-color); margin-bottom: 20px; line-height: 1.5; white-space: pre-wrap;"></div>
@@ -318,10 +338,8 @@
         </div>
     </div>
 
-    <!-- 主屏幕滑动容器 -->
     <div id="home-screen-wrapper">
         <div id="home-screen">
-            <!-- 第一页 -->
             <div class="home-page">
                 <div class="profile-widget">
                     <div class="profile-widget-glass">
@@ -356,7 +374,7 @@
                         <div class="app-icon glass" onclick="customAlert('查手机功能正在开发中...')"><i data-lucide="smartphone"></i>查手机</div>
                         <div class="app-icon glass" onclick="openWeibo()"><i data-lucide="message-square"></i>微博</div>
                         <div class="app-icon glass" onclick="customAlert('if功能正在开发中...')"><i data-lucide="git-branch"></i>if</div>
-                        <div class="app-icon glass" onclick="customAlert('论坛功能正在开发中...')"><i data-lucide="messages-square"></i>论坛</div>
+                        <div class="app-icon glass" onclick="openForum()"><i data-lucide="messages-square"></i>论坛</div>
                     </div>
                     
                     <div class="photo-container glass" onclick="document.getElementById('photo-upload-2').click()">
@@ -366,7 +384,6 @@
                 </div>
             </div>
             
-            <!-- 第二页 -->
             <div class="home-page">
                 <div class="apps-grid-1x4">
                     <div class="app-icon glass" onclick="openApp('app-tetris'); Tetris.init();"><i data-lucide="gamepad-2"></i>俄罗斯方块</div>
@@ -378,13 +395,11 @@
         </div>
     </div>
 
-    <!-- 分页指示器 (固定在 Dock 栏上方) -->
     <div class="pagination-dots">
         <div class="dot active"></div>
         <div class="dot"></div>
     </div>
 
-    <!-- 隐藏的上传输入框统一放在这里 -->
     <input type="file" id="avatar-upload" accept="image/*" onchange="handleImageUpload(event, 'user-avatar', 'avatar')">
     <input type="file" id="photo-upload" accept="image/*" onchange="handleImageUpload(event, 'user-photo', 'photo')">
     <input type="file" id="photo-upload-2" accept="image/*" onchange="handleImageUpload(event, 'user-photo-2', 'photo2')">
@@ -394,8 +409,6 @@
         <div class="app-icon" onclick="openApp('app-backup')"><i data-lucide="cloud"></i>备份</div>
         <div class="app-icon" onclick="openApp('app-beautify')"><i data-lucide="palette"></i>美化</div>
     </div>
-
-    <!-- ================= APP 视图区域 ================= -->
 
     <!-- Chat 列表 -->
     <div id="app-chat" class="app-view">
@@ -408,7 +421,6 @@
             <input type="file" id="char-upload" accept=".json,.png" onchange="importCharacter(event)">
         </div>
         
-        <!-- Chat 列表右上角下拉菜单 -->
         <div id="chat-dropdown-overlay" class="modal-overlay" onclick="closeChatMenu()" style="background: transparent; z-index: 98;"></div>
         <div id="chat-dropdown-menu" class="dropdown-menu">
             <div class="dropdown-section-title">新建</div>
@@ -441,7 +453,6 @@
             
             <label style="font-size:12px; color:#666; margin-bottom:5px; display:block;">选择群成员 (至少2个)</label>
             <div id="group-member-select-list" style="background: rgba(255,255,255,0.5); border-radius: 10px; padding: 10px; max-height: 300px; overflow-y: auto; border: 1px solid rgba(0,0,0,0.1);">
-                <!-- 动态渲染单聊角色 -->
             </div>
         </div>
     </div>
@@ -471,15 +482,11 @@
         <div class="app-header">
             <div class="back-btn" onclick="closeChatRoom()"><i data-lucide="chevron-left"></i> 列表</div>
             <div id="chat-room-title">角色名</div>
-            <div class="header-right" id="chat-header-right">
-                <!-- 动态渲染：单聊显示状态和设定，群聊显示群成员和设定 -->
-            </div>
+            <div class="header-right" id="chat-header-right"></div>
         </div>
         <div id="chat-messages" onclick="closeStickerPanel()"></div>
         
-        <!-- 聊天底部区域整合 -->
         <div class="chat-bottom-wrapper" id="chat-bottom-wrapper">
-            <!-- 功能栏 -->
             <div class="chat-toolbar">
                 <div class="chat-toolbar-item" onclick="toggleStickerPanel()"><i data-lucide="smile"></i>表情</div>
                 <div class="chat-toolbar-item" onclick="document.getElementById('chat-img-upload').click()"><i data-lucide="image"></i>图片</div>
@@ -490,7 +497,6 @@
             </div>
             <input type="file" id="chat-img-upload" accept="image/*" onchange="sendChatImage(event)">
 
-            <!-- 输入框 -->
             <div class="chat-input-area" id="chat-input-container">
                 <input type="text" id="chat-input" placeholder="输入消息..." onkeypress="if(event.key === 'Enter') handleSendClick()" onfocus="closeStickerPanel()">
                 <div class="icon-btn" onclick="handleSpeakClick()" title="呼叫角色发言"><i data-lucide="bot"></i></div>
@@ -498,19 +504,16 @@
             </div>
         </div>
 
-        <!-- 多选模式底部栏 -->
         <div id="chat-select-bar" class="chat-select-bar">
             <span style="color:#007aff; cursor:pointer; font-weight:bold;" onclick="exitSelectMode()">取消</span>
             <span style="color:#ff3b30; cursor:pointer; font-weight:bold;" onclick="deleteSelectedMessages()">删除选中 (<span id="select-count">0</span>)</span>
         </div>
 
-        <!-- 表情包面板 -->
         <div id="sticker-panel" class="sticker-panel">
             <div class="sticker-tabs" id="sticker-tabs"></div>
             <div class="sticker-content" id="sticker-content"></div>
         </div>
 
-        <!-- 消息操作菜单 -->
         <div id="msg-action-overlay" class="modal-overlay" onclick="closeMessageMenu()" style="z-index: 99; background: rgba(0,0,0,0.2);"></div>
         <div id="msg-action-sheet" class="msg-action-sheet">
             <div id="action-edit" class="action-btn primary" onclick="editMessage()" style="display:none;">编辑文本</div>
@@ -523,27 +526,20 @@
         </div>
     </div>
 
-    <!-- @ 和 拍一拍 成员选择弹窗 -->
     <div id="at-select-modal" class="modal-overlay" style="z-index: 110;" onclick="closeMemberSelectMenu()">
         <div class="modal-content" style="background: #f5f5f5; padding: 0; overflow: hidden; max-height: 50%;" onclick="event.stopPropagation()">
             <div id="member-select-title" style="padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; text-align: center; color: var(--text-color);">选择提醒的人</div>
-            <div id="at-member-list" style="overflow-y: auto; max-height: 300px;">
-                <!-- 动态渲染 -->
-            </div>
+            <div id="at-member-list" style="overflow-y: auto; max-height: 300px;"></div>
         </div>
     </div>
 
-    <!-- 群成员 弹窗 -->
     <div id="group-info-modal" class="modal-overlay" style="z-index: 110;" onclick="closeGroupInfo()">
         <div class="modal-content" style="background: #f5f5f5; padding: 0; overflow: hidden; max-height: 50%;" onclick="event.stopPropagation()">
             <div style="padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; text-align: center; color: var(--text-color);">群成员 (点击查看状态)</div>
-            <div id="group-info-member-list" style="overflow-y: auto; max-height: 300px;">
-                <!-- 动态渲染 -->
-            </div>
+            <div id="group-info-member-list" style="overflow-y: auto; max-height: 300px;"></div>
         </div>
     </div>
 
-    <!-- 角色状态弹窗 (美化版) -->
     <div id="char-state-modal" class="modal-overlay" style="z-index: 110;">
         <div class="modal-content" style="position: relative; background: var(--chat-bg); max-width: 320px; border-radius: 20px; padding: 25px 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3);">
             <div onclick="closeCharStatePanel()" style="position: absolute; top: 15px; right: 15px; width: 30px; height: 30px; background: rgba(0,0,0,0.05); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--text-color); transition: background 0.2s;">
@@ -570,7 +566,6 @@
         </div>
     </div>
 
-    <!-- 发送图片带描述弹窗 -->
     <div id="img-desc-modal" class="modal-overlay" style="z-index: 110;">
         <div class="modal-content" style="background: #f5f5f5; align-items: center;">
             <h3 style="margin-bottom:15px; color:var(--text-color);">发送图片</h3>
@@ -583,7 +578,6 @@
         </div>
     </div>
 
-    <!-- 添加表情包弹窗 -->
     <div id="sticker-add-modal" class="modal-overlay" style="z-index: 110;">
         <div class="modal-content" style="background: #f5f5f5;">
             <h3 style="margin-bottom:15px; color:var(--text-color); text-align:center;">添加表情包</h3>
@@ -603,7 +597,6 @@
         </div>
     </div>
 
-    <!-- 创建新分类弹窗 -->
     <div id="new-cat-modal" class="modal-overlay" style="z-index: 120;">
         <div class="modal-content" style="background: #f5f5f5; max-width: 300px; margin: auto;">
             <h3 style="margin-bottom:15px; color:var(--text-color); text-align:center; font-size: 16px;">创建新分类</h3>
@@ -615,7 +608,6 @@
         </div>
     </div>
 
-    <!-- 红包弹窗 -->
     <div id="rp-modal" class="modal-overlay" style="z-index: 110;">
         <div class="modal-content" style="background: #f5f5f5;">
             <h3 style="text-align:center; margin-bottom:15px; color:#d9534f;">发红包</h3>
@@ -628,7 +620,6 @@
         </div>
     </div>
 
-    <!-- 转账弹窗 -->
     <div id="tf-modal" class="modal-overlay" style="z-index: 110;">
         <div class="modal-content" style="background: #f5f5f5;">
             <h3 style="text-align:center; margin-bottom:15px; color:#f39c12;">转账给对方</h3>
@@ -656,7 +647,6 @@
         </div>
 
         <div class="app-content" style="padding-top: 15px;">
-            <!-- 模块1：角色人设 -->
             <div id="tab-char" class="tab-content active">
                 <div style="text-align:center; margin-bottom:20px;">
                     <img id="cs-char-avatar" onclick="document.getElementById('cs-char-avatar-upload').click()" style="width:80px; height:80px; border-radius:50%; object-fit:cover; background:#fff; cursor:pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block; margin: 0 auto;">
@@ -672,7 +662,6 @@
                 <div id="cs-worldbooks-container" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; border-radius: 10px; padding: 10px; background: rgba(255,255,255,0.7); margin-bottom: 15px;"></div>
             </div>
 
-            <!-- 模块2：用户人设 -->
             <div id="tab-user" class="tab-content">
                 <div style="text-align:center; margin-bottom:20px;">
                     <img id="cs-user-avatar" onclick="document.getElementById('cs-user-avatar-upload').click()" style="width:80px; height:80px; border-radius:50%; object-fit:cover; background:#fff; cursor:pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block; margin: 0 auto;">
@@ -685,7 +674,6 @@
                 <textarea id="cs-user-prompt" rows="8" placeholder="例如：我是一个普通的大学生，性格开朗，是你的青梅竹马..."></textarea>
             </div>
 
-            <!-- 模块3：聊天设置 -->
             <div id="tab-chat" class="tab-content">
                 <div class="section-title">关联预设 (可多选)</div>
                 <div id="cs-presets-container" style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; border-radius: 10px; padding: 10px; background: rgba(255,255,255,0.7); margin-bottom: 15px;"></div>
@@ -779,7 +767,6 @@
         </div>
     </div>
 
-    <!-- 微博：发博/编辑弹窗 -->
     <div id="weibo-post-modal" class="app-view" style="z-index: 80;">
         <div class="app-header">
             <div class="back-btn" onclick="closeNewWeiboModal()"><i data-lucide="x"></i> 取消</div>
@@ -796,7 +783,6 @@
         </div>
     </div>
 
-    <!-- 微博：动态操作菜单 -->
     <div id="weibo-action-overlay" class="modal-overlay" onclick="closeWeiboActionMenu()" style="z-index: 99; background: rgba(0,0,0,0.2);"></div>
     <div id="weibo-action-sheet" class="msg-action-sheet">
         <div id="weibo-action-edit" class="action-btn primary" onclick="editWeiboPost()" style="display:none;">编辑微博</div>
@@ -804,11 +790,85 @@
         <div class="action-btn" style="color: #888; border-top: 6px solid rgba(0,0,0,0.05);" onclick="closeWeiboActionMenu()">取消</div>
     </div>
 
-    <!-- 微博：管理菜单 -->
     <div id="weibo-manage-overlay" class="modal-overlay" onclick="closeWeiboManage()" style="z-index: 99; background: rgba(0,0,0,0.2);"></div>
     <div id="weibo-manage-sheet" class="msg-action-sheet">
         <div class="action-btn danger" onclick="clearWeiboCache()">清除微博缓存 (初始化)</div>
         <div class="action-btn" style="color: #888; border-top: 6px solid rgba(0,0,0,0.05);" onclick="closeWeiboManage()">取消</div>
+    </div>
+
+    <!-- 论坛 App -->
+    <div id="app-forum" class="app-view" style="padding-top: 40px; flex-direction: column;">
+        <div class="app-header">
+            <div class="back-btn" onclick="closeApp()"><i data-lucide="chevron-left"></i> 返回</div>
+            <div>匿名论坛</div>
+            <div></div>
+        </div>
+        
+        <!-- 论坛首页 -->
+        <div id="forum-tab-home" class="forum-content-area active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div style="font-size: 18px; font-weight: bold; color: var(--text-color);">热门帖子</div>
+                <div class="refresh-btn" id="btn-refresh-forum" onclick="refreshForumPosts()"><i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> 刷新</div>
+            </div>
+            <div id="forum-home-list"></div>
+        </div>
+        
+        <!-- 论坛个人主页 -->
+        <div id="forum-tab-profile" class="forum-content-area">
+            <div class="weibo-profile-header" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <img id="forum-my-avatar" class="weibo-profile-avatar" src="">
+                <div class="weibo-profile-name" id="forum-my-nickname">我</div>
+                <div class="weibo-stats-row" style="margin-top: 10px;">
+                    <div class="weibo-stat"><span class="weibo-stat-num" id="forum-stat-posts">0</span><span class="weibo-stat-label">发帖</span></div>
+                    <div class="weibo-stat"><span class="weibo-stat-num" id="forum-stat-replies">0</span><span class="weibo-stat-label">获赞</span></div>
+                </div>
+            </div>
+            <div style="font-size: 16px; font-weight: bold; margin: 15px 0; color: var(--text-color);">我的帖子</div>
+            <div id="forum-my-posts"></div>
+            <div class="weibo-fab" style="background: #007aff; box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);" onclick="openNewForumPostModal()"><i data-lucide="edit-3"></i></div>
+        </div>
+        
+        <!-- 底部导航 -->
+        <div class="forum-tab-bar">
+            <div class="forum-tab-item active" onclick="switchForumTab('home')"><i data-lucide="home"></i><span>首页</span></div>
+            <div class="forum-tab-item" onclick="switchForumTab('profile')"><i data-lucide="user"></i><span>我的</span></div>
+        </div>
+    </div>
+
+    <!-- 论坛发帖弹窗 -->
+    <div id="forum-post-modal" class="app-view" style="z-index: 80;">
+        <div class="app-header">
+            <div class="back-btn" onclick="closeNewForumPostModal()"><i data-lucide="x"></i> 取消</div>
+            <div>发布新帖</div>
+            <div class="back-btn" onclick="submitForumPost()" style="color: #007aff;">发布</div>
+        </div>
+        <div class="app-content">
+            <input type="text" id="forum-post-title" placeholder="加个标题吧 (选填)" style="font-size: 16px; font-weight: bold; border: none; border-bottom: 1px solid #eee; border-radius: 0; background: transparent; padding-left: 0;">
+            <textarea id="forum-post-input" rows="10" placeholder="分享你的故事或吐槽..." style="border:none; background:transparent; font-size:15px; padding:10px 0;"></textarea>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                <span style="font-size: 14px; color: #666;">匿名发布身份</span>
+                <label class="switch">
+                    <input type="checkbox" id="forum-post-anon">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- 论坛帖子详情页 -->
+    <div id="app-forum-detail" class="app-view" style="z-index: 70;">
+        <div class="app-header">
+            <div class="back-btn" onclick="closeForumDetail()"><i data-lucide="chevron-left"></i> 返回</div>
+            <div>帖子详情</div>
+            <div class="back-btn" id="forum-detail-del-btn" onclick="deleteCurrentForumPost()" style="color: #ff3b30; display: none;"><i data-lucide="trash-2"></i></div>
+        </div>
+        <div class="app-content" id="forum-detail-content" style="padding-bottom: 80px; background: #f2f2f6;">
+            <!-- 详情内容将通过 JS 渲染在这里 -->
+        </div>
+        <div class="forum-detail-bottom">
+            <input type="text" id="forum-comment-input" placeholder="写下你的评论..." onkeypress="if(event.key === 'Enter') submitForumComment()">
+            <div class="icon-btn primary" onclick="submitForumComment()"><i data-lucide="send"></i></div>
+        </div>
     </div>
 
     <!-- 俄罗斯方块 App -->
@@ -870,7 +930,6 @@
         </div>
     </div>
 
-    <!-- 预设条目列表界面 -->
     <div id="app-preset-entries" class="app-view" style="z-index: 60;">
         <div class="app-header">
             <div class="back-btn" onclick="closePresetEntries()"><i data-lucide="chevron-left"></i> 返回</div>
@@ -880,7 +939,6 @@
         <div class="app-content" id="preset-entries-list"></div>
     </div>
 
-    <!-- 预设单条目编辑界面 -->
     <div id="app-preset-entry-edit" class="app-view" style="z-index: 70;">
         <div class="app-header">
             <div class="back-btn" onclick="closePresetEntryEdit()"><i data-lucide="chevron-left"></i> 取消</div>
@@ -912,7 +970,6 @@
         </div>
     </div>
 
-    <!-- 世界书条目列表界面 -->
     <div id="app-wb-entries" class="app-view" style="z-index: 60;">
         <div class="app-header">
             <div class="back-btn" onclick="closeWbEntries()"><i data-lucide="chevron-left"></i> 返回</div>
@@ -922,7 +979,6 @@
         <div class="app-content" id="wb-entries-list"></div>
     </div>
 
-    <!-- 世界书单条目编辑界面 -->
     <div id="app-wb-entry-edit" class="app-view" style="z-index: 70;">
         <div class="app-header">
             <div class="back-btn" onclick="closeEntryEdit()"><i data-lucide="chevron-left"></i> 取消</div>
@@ -1047,7 +1103,6 @@
         </div>
     </div>
 
-    <!-- 模型选择弹窗 -->
     <div id="model-modal" class="modal-overlay">
         <div class="modal-content glass">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px;">
@@ -1061,6 +1116,43 @@
 </div>
 
 <script>
+    // ================= 前端图片压缩核心逻辑 =================
+    function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height && width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    } else if (height > width && height > maxHeight) {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 填充白色背景，防止透明PNG变黑
+                    ctx.fillStyle = '#fff';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                    resolve(compressedBase64);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
     // ================= 自定义 Alert 弹窗逻辑 =================
     function customAlert(msg) {
         document.getElementById('custom-alert-msg').innerText = msg;
@@ -1081,6 +1173,7 @@
         photo: '', photo2: '', theme: 'light', apis: [], activeApiId: null, accounting: [], characters: [], chats: {}, 
         worldbooks: [], presets: [], wallpapers: [], currentWallpaperId: null, fonts: [], currentFontId: null, tetrisHighScore: 0,
         weibo: { hot: [], follow: [], myPosts: [], followers: 0, nickname: '我', avatar: '', motto: '' },
+        forum: { posts: [], myPosts: [] },
         stickers: { '默认': [] }
     };
 
@@ -1090,10 +1183,9 @@
     let weiboTargetPostId = null; let weiboTargetPostType = null; let weiboEditingPostId = null;
     let isChatSelectMode = false; let selectedMessages = new Set(); let targetMsgId = null; let targetMsgRole = null;
     let currentStickerTab = '默认'; let isStickerManageMode = false; let tempImageBase64 = '';
-    let memberSelectMode = 'at'; // 'at' or 'pat'
+    let memberSelectMode = 'at';
 
     function init() {
-        adjustScale(); window.addEventListener('resize', adjustScale);
         const saved = localStorage.getItem('aiPhoneData');
         if (saved) {
             try {
@@ -1102,6 +1194,7 @@
                 if (!appData.presets) appData.presets = [];
                 if (typeof appData.tetrisHighScore === 'undefined') appData.tetrisHighScore = 0;
                 if (!appData.weibo) appData.weibo = { hot: [], follow: [], myPosts: [], followers: 0, nickname: '我', avatar: '', motto: '' };
+                if (!appData.forum) appData.forum = { posts: [], myPosts: [] };
                 if (!appData.stickers) appData.stickers = { '默认': [] };
                 if (!appData.widgetBg) appData.widgetBg = 'https://i.postimg.cc/VrrxqP0L/image.jpg';
 
@@ -1131,7 +1224,6 @@
         setCurrentDateTime(); renderUI(); applySavedBeautify(); updateAppIconBadges();
         setInterval(updateClock, 1000); updateClock(); lucide.createIcons();
 
-        // 初始化滑动翻页指示器
         const homeScreen = document.getElementById('home-screen');
         const dots = document.querySelectorAll('.dot');
         homeScreen.addEventListener('scroll', () => {
@@ -1154,7 +1246,11 @@
 
     function safeSaveData() {
         appData.motto = document.getElementById('user-motto').innerText;
-        try { localStorage.setItem('aiPhoneData', JSON.stringify(appData)); } catch (e) { customAlert("存储空间不足！请尝试删除一些壁纸或字体文件。"); }
+        try { 
+            localStorage.setItem('aiPhoneData', JSON.stringify(appData)); 
+        } catch (e) { 
+            customAlert("存储空间不足！请尝试删除一些壁纸或字体文件。"); 
+        }
     }
 
     function renderUI() {
@@ -1165,10 +1261,6 @@
         changeTheme(appData.theme || 'light'); renderApiList(); renderAccounting(); renderChatList(); renderWorldbookList(); renderPresetList(); renderBeautifyLists();
     }
 
-    function adjustScale() {
-        const scale = Math.min(window.innerHeight / 880, window.innerWidth / 410);
-        document.getElementById('iphone').style.transform = scale < 1 ? `scale(${scale})` : `scale(1)`;
-    }
 
     function openApp(appId) { document.getElementById(appId).classList.add('active'); }
     function closeApp() { 
@@ -1180,22 +1272,76 @@
         renderChatList(); renderWorldbookList(); renderPresetList(); lucide.createIcons();
     }
 
-    function handleImageUpload(event, imgId, dataKey, isTemp = false) {
+    // ================= 图片上传与压缩处理 =================
+    async function handleImageUpload(event, imgId, dataKey, isTemp = false) {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById(imgId).src = e.target.result;
-                if(imgId === 'user-photo' || imgId === 'user-photo-2') {
-                    document.getElementById(imgId).style.display = 'block';
-                    document.getElementById(imgId.replace('user-photo', 'photo-placeholder')).style.display = 'none';
-                }
-                if (!isTemp && dataKey) { appData[dataKey] = e.target.result; safeSaveData(); }
+            const compressedBase64 = await compressImage(file, 800, 800, 0.7);
+            document.getElementById(imgId).src = compressedBase64;
+            if(imgId === 'user-photo' || imgId === 'user-photo-2') {
+                document.getElementById(imgId).style.display = 'block';
+                document.getElementById(imgId.replace('user-photo', 'photo-placeholder')).style.display = 'none';
             }
-            reader.readAsDataURL(file);
+            if (!isTemp && dataKey) { 
+                appData[dataKey] = compressedBase64; 
+                safeSaveData(); 
+            }
         }
     }
 
+    async function sendChatImage(event) { 
+        const file = event.target.files[0]; 
+        if (!file || !currentChatId) return; 
+        
+        tempImageBase64 = await compressImage(file, 600, 600, 0.6);
+        
+        document.getElementById('img-desc-preview').src = tempImageBase64; 
+        document.getElementById('img-desc-input').value = ''; 
+        closeStickerPanel(); 
+        document.getElementById('img-desc-modal').style.display = 'flex'; 
+        event.target.value = ''; 
+    }
+
+    async function handleWeiboAvatarUpload(event) { 
+        const file = event.target.files[0]; 
+        if (file) { 
+            appData.weibo.avatar = await compressImage(file, 400, 400, 0.7); 
+            safeSaveData(); 
+            renderWeiboProfile(); 
+        } 
+    }
+
+    async function handleWeiboImageUpload(event) { 
+        const file = event.target.files[0]; 
+        if (file) { 
+            const compressedBase64 = await compressImage(file, 800, 800, 0.7);
+            const img = document.getElementById('weibo-post-img-preview'); 
+            img.src = compressedBase64; 
+            img.style.display = 'block'; 
+        } 
+    }
+
+    async function uploadWidgetBg(event) { 
+        const file = event.target.files[0]; 
+        if (file) { 
+            appData.widgetBg = await compressImage(file, 1080, 1080, 0.8); 
+            safeSaveData(); 
+            applySavedBeautify(); 
+            customAlert('卡片底图已更新！'); 
+        } 
+    }
+
+    async function uploadWallpaper(event) { 
+        const file = event.target.files[0]; 
+        if (file) { 
+            const compressedBase64 = await compressImage(file, 1080, 1920, 0.8);
+            appData.wallpapers.push({ id: Date.now(), name: file.name, data: compressedBase64 }); 
+            safeSaveData(); 
+            renderBeautifyLists(); 
+        } 
+    }
+
+    // ================= 其他辅助函数 =================
     function updateAppIconBadges() {
         const totalUnread = appData.characters.reduce((sum, char) => sum + (char.unreadCount || 0), 0);
         const chatAppIcon = document.getElementById('chat-app-icon');
@@ -1229,7 +1375,6 @@
         if (tabId === 'hot') renderWeiboHot(); else if (tabId === 'follow') renderWeiboFollow(); else if (tabId === 'profile') renderWeiboProfile();
         lucide.createIcons();
     }
-    function handleWeiboAvatarUpload(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { appData.weibo.avatar = e.target.result; safeSaveData(); renderWeiboProfile(); }; reader.readAsDataURL(file); } }
     function editWeiboNickname() { const newName = prompt("请输入新的微博昵称：", appData.weibo.nickname || '我'); if (newName !== null && newName.trim() !== '') { appData.weibo.nickname = newName.trim(); safeSaveData(); renderWeiboProfile(); } }
     function editWeiboMotto() { const newMotto = prompt("请输入新的个性签名：", appData.weibo.motto || appData.motto); if (newMotto !== null) { appData.weibo.motto = newMotto.trim(); safeSaveData(); renderWeiboProfile(); } }
     function toggleLikeWeibo(id, type) {
@@ -1310,7 +1455,6 @@
     }
     function openNewWeiboModal() { weiboEditingPostId = null; document.getElementById('weibo-post-modal-title').innerText = '发微博'; document.getElementById('weibo-post-input').value = ''; document.getElementById('weibo-post-img-preview').src = ''; document.getElementById('weibo-post-img-preview').style.display = 'none'; document.getElementById('weibo-post-modal').classList.add('active'); }
     function closeNewWeiboModal() { document.getElementById('weibo-post-modal').classList.remove('active'); }
-    function handleWeiboImageUpload(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { const img = document.getElementById('weibo-post-img-preview'); img.src = e.target.result; img.style.display = 'block'; }; reader.readAsDataURL(file); } }
     async function submitWeiboPost() {
         const content = document.getElementById('weibo-post-input').value.trim(); const imgDisplay = document.getElementById('weibo-post-img-preview').style.display; const image = imgDisplay === 'block' ? document.getElementById('weibo-post-img-preview').src : null;
         if (!content && !image) return customAlert('说点什么吧~');
@@ -1416,7 +1560,6 @@
     function closeChatMenu() { document.getElementById('chat-dropdown-overlay').style.display = 'none'; document.getElementById('chat-dropdown-menu').classList.remove('active'); }
     function toggleChatManageMode() { isChatManageMode = !isChatManageMode; const btn = document.getElementById('chat-header-action-btn'); if (isChatManageMode) { btn.innerHTML = '完成'; } else { btn.innerHTML = '<i data-lucide="plus-circle"></i>'; lucide.createIcons(); } renderChatList(); }
 
-    // ================= 新建群聊 =================
     function openCreateGroupView() {
         closeChatMenu();
         document.getElementById('new-group-avatar').src = `https://api.dicebear.com/7.x/shapes/svg?seed=${Date.now()}`;
@@ -1504,7 +1647,6 @@
         if (appData.characters.length === 0) { list.innerHTML = '<p style="text-align:center; color:#888; margin-top:20px;">暂无角色，请点击右上角新建</p>'; return; }
         list.innerHTML = '';
         
-        // 排序逻辑：置顶 > 最新消息时间
         const sortedChars = [...appData.characters].sort((a, b) => { 
             if (a.pinned && !b.pinned) return -1; 
             if (!a.pinned && b.pinned) return 1; 
@@ -1610,7 +1752,6 @@
         lucide.createIcons();
     }
 
-    // ================= @ 和 拍一拍 菜单逻辑 =================
     function openMemberSelectMenu(mode) {
         memberSelectMode = mode;
         const group = appData.characters.find(c => c.id === currentChatId);
@@ -1670,7 +1811,6 @@
         }
     }
 
-    // ================= 角色状态面板与设定 =================
     function openCharStatePanel() { const char = appData.characters.find(c => c.id === currentChatId); if (!char || char.isGroup) return; document.getElementById('state-avatar').src = char.avatar; document.getElementById('state-name').innerText = char.name; document.getElementById('state-clothing').innerText = char.currentState?.clothing || '未知'; document.getElementById('state-status').innerText = char.currentState?.status || '未知'; document.getElementById('state-thoughts').innerText = char.currentState?.innerThoughts || '未知'; document.getElementById('char-state-modal').style.display = 'flex'; lucide.createIcons(); }
     function closeCharStatePanel() { document.getElementById('char-state-modal').style.display = 'none'; }
     function switchSettingsTab(tabId) { document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active')); document.querySelector(`.tab-btn[onclick*="${tabId}"]`).classList.add('active'); document.getElementById(`tab-${tabId}`).classList.add('active'); }
@@ -1699,7 +1839,6 @@
         document.getElementById('chat-room-title').innerText = char.name; safeSaveData(); closeCharSettings(); customAlert('聊天设定已保存！'); renderMessages(); renderChatList();
     }
 
-    // ================= 消息渲染与管理 =================
     function renderMessages() {
         const container = document.getElementById('chat-messages'); container.innerHTML = '';
         const history = appData.chats[currentChatId] || [];
@@ -1765,7 +1904,6 @@
 
     function scrollToBottom() { const container = document.getElementById('chat-messages'); container.scrollTop = container.scrollHeight; }
 
-    // ================= 消息操作菜单 =================
     function openMessageMenu(id, role) {
         targetMsgId = id; targetMsgRole = role; const chatHistory = appData.chats[currentChatId]; let isLatestRound = false;
         if (role === 'ai' && chatHistory.length > 0) { let latestAiIds = new Set(); for (let i = chatHistory.length - 1; i >= 0; i--) { if (chatHistory[i].role === 'user') break; if (chatHistory[i].role === 'assistant') { latestAiIds.add(chatHistory[i].id); } } if (latestAiIds.has(id)) { isLatestRound = true; } }
@@ -1779,15 +1917,12 @@
     function rewindMessage() { if(confirm("确定回溯至此吗？\n该消息及其之后的所有对话将被永久删除。")) { const idx = appData.chats[currentChatId].findIndex(m => m.id === targetMsgId); if (idx !== -1) { appData.chats[currentChatId] = appData.chats[currentChatId].slice(0, idx); safeSaveData(); renderMessages(); renderChatList(); } } closeMessageMenu(); }
     function regenerateMessage() { const chatHistory = appData.chats[currentChatId]; let lastUserIndex = -1; for (let i = chatHistory.length - 1; i >= 0; i--) { if (chatHistory[i].role === 'user') { lastUserIndex = i; break; } } if (lastUserIndex !== -1) { appData.chats[currentChatId] = chatHistory.slice(0, lastUserIndex + 1); } else { appData.chats[currentChatId] = []; } safeSaveData(); renderMessages(); closeMessageMenu(); handleSpeakClick(true); }
 
-    // ================= 多选模式 =================
     function enterSelectMode() { closeMessageMenu(); isChatSelectMode = true; selectedMessages.clear(); document.getElementById('chat-bottom-wrapper').style.display = 'none'; document.getElementById('chat-select-bar').style.display = 'flex'; updateSelectCount(); renderMessages(); }
     function exitSelectMode() { isChatSelectMode = false; selectedMessages.clear(); document.getElementById('chat-bottom-wrapper').style.display = 'flex'; document.getElementById('chat-select-bar').style.display = 'none'; renderMessages(); }
     function toggleMessageSelection(id) { if (selectedMessages.has(id)) { selectedMessages.delete(id); } else { selectedMessages.add(id); } updateSelectCount(); renderMessages(); }
     function updateSelectCount() { document.getElementById('select-count').innerText = selectedMessages.size; }
     function deleteSelectedMessages() { if (selectedMessages.size === 0) return; if (confirm(`确定删除选中的 ${selectedMessages.size} 条消息吗？`)) { appData.chats[currentChatId] = appData.chats[currentChatId].filter(m => !selectedMessages.has(m.id)); safeSaveData(); exitSelectMode(); renderChatList(); } }
 
-    // ================= 特殊功能发送逻辑 =================
-    function sendChatImage(event) { const file = event.target.files[0]; if (!file || !currentChatId) return; const reader = new FileReader(); reader.onload = e => { tempImageBase64 = e.target.result; document.getElementById('img-desc-preview').src = tempImageBase64; document.getElementById('img-desc-input').value = ''; closeStickerPanel(); document.getElementById('img-desc-modal').style.display = 'flex'; }; reader.readAsDataURL(file); event.target.value = ''; }
     function closeImgDescModal() { document.getElementById('img-desc-modal').style.display = 'none'; tempImageBase64 = ''; }
     function confirmSendImage() { const desc = document.getElementById('img-desc-input').value.trim(); let content = `[图片: ${tempImageBase64}]`; if (desc) { content = `[图片: ${tempImageBase64} | 描述: ${desc}]`; } sendSpecialMessage(content); closeImgDescModal(); }
     function toggleStickerPanel() { const panel = document.getElementById('sticker-panel'); if (panel.classList.contains('active')) { closeStickerPanel(); } else { renderStickerPanel(); panel.classList.add('active'); } }
@@ -1818,7 +1953,6 @@
     function sendTransfer() { let amt = parseFloat(document.getElementById('tf-amount').value); let msg = document.getElementById('tf-msg').value.trim() || '转账'; if (isNaN(amt) || amt <= 0) return customAlert('请输入有效金额'); sendSpecialMessage(`[转账: ${amt.toFixed(2)}, ${msg}]`); closeTransferModal(); }
     function sendSpecialMessage(content) { if (!currentChatId) return; appData.chats[currentChatId] = appData.chats[currentChatId].filter(m => !(m.role === 'system' && m.content.includes('自动总结'))); const newMsg = { id: Date.now().toString() + Math.random().toString(36).substr(2, 5), role: 'user', content: content }; appData.chats[currentChatId].push(newMsg); safeSaveData(); renderMessages(); renderChatList(); }
 
-    // ================= 发送与 API 请求 =================
     async function handleSendClick() {
         const input = document.getElementById('chat-input'); const text = input.value.trim(); if (!text || !currentChatId) return;
         appData.chats[currentChatId] = appData.chats[currentChatId].filter(m => !(m.role === 'system' && m.content.includes('自动总结')));
@@ -1844,7 +1978,6 @@
         }
     }
 
-    // 单聊 API 请求
     async function fetchAIReply(isContinue = false, targetCharId) {
         const activeApi = appData.apis.find(a => a.id === appData.activeApiId);
         if (!activeApi) { if (targetCharId === currentChatId) appendMessageUI('system', {content: '请先在 Dock 栏的 API 设置中添加并选中一个 API。'}); return; }
@@ -1863,7 +1996,6 @@
         let stickerLib = ""; for (let cat in appData.stickers) { if (appData.stickers[cat].length > 0) { stickerLib += `分类【${cat}】:\n${appData.stickers[cat].join('\n')}\n`; } }
         if (stickerLib) { finalSystemPrompt += `\n\n【你的表情包库】\n你可以使用以下表情包来丰富你的回复。如果想发送表情包，请在回复中包含格式 \`[表情包: URL]\`。请根据分类名称选择合适的表情包：\n${stickerLib}`; }
         
-        // 强化状态视角的 Prompt
         finalSystemPrompt += `\n\n【输出格式要求】\n你必须以严格的 JSON 格式输出你的回复和当前状态。不要输出任何 markdown 标记（如 \`\`\`json），直接输出 JSON 字符串。\n格式如下：\n{\n  "reply": "你对用户说的话（如果是线上模式则是短信内容，线下模式可包含动作描写）",\n  "state": {\n    "clothing": "第三人称客观视角描写你的衣着，30字以内",\n    "status": "第三人称客观视角描写你的当前状态（如姿势、神态、所处环境），30字以内",\n    "innerThoughts": "第一人称视角描写你的内心活动"\n  }\n}`;
 
         let cleanHistory = appData.chats[targetCharId].filter(m => m.role !== 'system').map(m => {
@@ -1894,7 +2026,6 @@
                 let parsedObj = extractJSONObj(rawReply); let finalReply = rawReply;
                 if (parsedObj && parsedObj.reply) { finalReply = parsedObj.reply; if (parsedObj.state) { char.currentState = { clothing: parsedObj.state.clothing || '未知', status: parsedObj.state.status || '未知', innerThoughts: parsedObj.state.innerThoughts || '未知' }; } }
                 
-                // 线上模式多气泡拆分逻辑
                 if (char.chatMode === 'online') {
                     const msgs = finalReply.split('\n').filter(m => m.trim() !== '');
                     msgs.forEach(m => { appData.chats[targetCharId].push({ id: Date.now().toString() + Math.random().toString(36).substr(2, 5), role: 'assistant', content: m.trim() }); });
@@ -1909,7 +2040,6 @@
         } catch (error) { if (targetCharId === currentChatId) { document.getElementById('loading-msg')?.remove(); appendMessageUI('system', {content: `发送失败: ${error.message}`}); } }
     }
 
-    // 群聊 API 请求调度
     async function fetchGroupAIReply(groupId, isContinue = false) {
         const group = appData.characters.find(c => c.id === groupId);
         if (!group) return;
@@ -1935,7 +2065,6 @@
                         replyQueue.push(id);
                     }
                 });
-                // 如果没有 @ 任何人，随机 1 到 全部
                 if (replyQueue.length === 0) {
                     const replyCount = Math.floor(Math.random() * activeMembers.length) + 1;
                     const shuffled = [...activeMembers].sort(() => 0.5 - Math.random());
@@ -1943,20 +2072,16 @@
                 }
             }
         } else {
-            // 呼叫继续发言，随机选一个
             const randomIndex = Math.floor(Math.random() * activeMembers.length);
             replyQueue.push(activeMembers[randomIndex]);
         }
 
-        // 禁用输入框
         const input = document.getElementById('chat-input');
         input.disabled = true;
         input.placeholder = "群成员正在回复中...";
 
-        // 串行请求
         for (let memberId of replyQueue) {
             await fetchSingleGroupMemberReply(groupId, memberId);
-            // 稍微停顿一下，模拟打字感
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
@@ -1965,7 +2090,6 @@
         input.focus();
     }
 
-    // 单个群成员的 API 请求
     async function fetchSingleGroupMemberReply(groupId, memberId) {
         const activeApi = appData.apis.find(a => a.id === appData.activeApiId);
         if (!activeApi) return;
@@ -1984,13 +2108,10 @@
         const selectedWbs = memberChar.worldbookIds || [];
         if (selectedWbs.length > 0) { let wbTexts = []; selectedWbs.forEach(wbId => { const wb = appData.worldbooks.find(w => w.id === wbId); if (wb && wb.entries) { const activeEntries = wb.entries.filter(e => e.enabled); activeEntries.forEach(e => wbTexts.push(`【${e.keys}】\n${e.content}`)); } }); if (wbTexts.length > 0) finalSystemPrompt += `\n\n【世界观设定】\n${wbTexts.join('\n\n')}`; }
         
-        // 强化群聊 Prompt，支持多气泡
         finalSystemPrompt += `\n\n请注意：\n1. 你只能以 ${memberChar.name} 的身份发言。\n2. 请结合群聊上下文和其他人的发言进行自然的回复或互动。\n3. 如果你想连续发送多条消息，请用换行符分隔每一条消息。\n4. 严格输出 JSON 格式：{"reply": "你的回复内容"}`;
 
-        // 构建群聊历史记录
         let cleanHistory = appData.chats[groupId].filter(m => m.role !== 'system').map(m => {
             let apiContent = m.content;
-            // 简单处理图片和表情包文本
             apiContent = apiContent.replace(/\[图片:.*?\]/g, '[发送了一张图片]').replace(/\[表情包:.*?\]/g, '[发送了一个表情包]');
             
             if (m.role === 'user') {
@@ -2006,7 +2127,7 @@
             }
         });
 
-        const shortTermLimit = 30; // 群聊上下文可以稍微长一点
+        const shortTermLimit = 30; 
         if (cleanHistory.length > shortTermLimit) { cleanHistory = cleanHistory.slice(-shortTermLimit); }
         
         const messagesPayload = [{ role: 'system', content: finalSystemPrompt }, ...cleanHistory];
@@ -2028,7 +2149,6 @@
                 let parsedObj = extractJSONObj(rawReply); let finalReply = rawReply;
                 if (parsedObj && parsedObj.reply) { finalReply = parsedObj.reply; }
                 
-                // 群聊多气泡拆分逻辑
                 const msgs = finalReply.split('\n').filter(m => m.trim() !== '');
                 msgs.forEach(m => {
                     const newMsg = { id: Date.now().toString() + Math.random().toString(36).substr(2, 5), role: 'assistant', content: m.trim(), senderId: memberId };
@@ -2051,7 +2171,6 @@
         }
     }
 
-    // ================= 记忆总结 API =================
     async function manualUpdateMemory() { if (!currentChatId) return; const btn = document.querySelector('button[onclick="manualUpdateMemory()"]'); const originalText = btn.innerText; btn.innerText = '正在总结记忆中...'; btn.disabled = true; updateMemoryCore(currentChatId).then(() => { btn.innerText = originalText; btn.disabled = false; }); }
     async function updateMemoryCore(charId) {
         const activeApi = appData.apis.find(a => a.id === appData.activeApiId); if (!activeApi) return; const char = appData.characters.find(c => c.id === charId); if (!char) return; const history = appData.chats[charId] || []; if (history.length === 0) return;
@@ -2078,19 +2197,15 @@
         }
     }
 
-    // ================= 记账功能 =================
     function submitAccounting() { const type = document.getElementById('acc-type').value; const date = document.getElementById('acc-date').value; const item = document.getElementById('acc-item').value.trim(); const amount = parseFloat(document.getElementById('acc-amount').value); if(!date || !item || isNaN(amount)) return customAlert('请填写完整信息'); if (editingAccountId) { const index = appData.accounting.findIndex(a => a.id === editingAccountId); if (index !== -1) appData.accounting[index] = { ...appData.accounting[index], type, date, item, amount }; cancelEditAccounting(); } else { appData.accounting.push({ id: Date.now(), type, date, item, amount }); document.getElementById('acc-item').value = ''; document.getElementById('acc-amount').value = ''; setCurrentDateTime(); } safeSaveData(); renderAccounting(); }
     function editAccounting(id) { const acc = appData.accounting.find(a => a.id === id); if (!acc) return; document.getElementById('acc-type').value = acc.type; document.getElementById('acc-date').value = acc.date; document.getElementById('acc-item').value = acc.item; document.getElementById('acc-amount').value = acc.amount; editingAccountId = id; document.getElementById('acc-submit-btn').innerText = '保存修改'; document.getElementById('acc-submit-btn').style.background = '#28a745'; document.getElementById('acc-cancel-btn').style.display = 'block'; }
     function cancelEditAccounting() { editingAccountId = null; document.getElementById('acc-item').value = ''; document.getElementById('acc-amount').value = ''; setCurrentDateTime(); document.getElementById('acc-submit-btn').innerText = '记一笔'; document.getElementById('acc-submit-btn').style.background = '#6b8cce'; document.getElementById('acc-cancel-btn').style.display = 'none'; }
     function deleteAccounting(id) { if(confirm('确定要删除这笔账单吗？')) { appData.accounting = appData.accounting.filter(a => a.id !== id); if(editingAccountId === id) cancelEditAccounting(); safeSaveData(); renderAccounting(); } }
     function renderAccounting() { const list = document.getElementById('acc-list'); list.innerHTML = ''; let totalIn = 0, totalOut = 0; const sortedAcc = [...appData.accounting].sort((a, b) => new Date(b.date) - new Date(a.date)); sortedAcc.forEach(acc => { if (!acc.id) acc.id = Date.now() + Math.random(); const amt = parseFloat(acc.amount) || 0; if(acc.type === '收入') totalIn += amt; else totalOut += amt; const color = acc.type === '收入' ? '#7eb38a' : '#c97a7e'; const sign = acc.type === '收入' ? '+' : '-'; const icon = acc.type === '收入' ? '<i data-lucide="arrow-down-circle" style="color:#7eb38a;"></i>' : '<i data-lucide="arrow-up-circle" style="color:#c97a7e;"></i>'; let displayDate = acc.date; if (displayDate.includes('T')) displayDate = displayDate.replace('T', ' '); list.innerHTML += `<li class="list-card" style="padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px;"><div style="display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden;"><div style="font-size: 24px; background: rgba(0,0,0,0.05); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0;">${icon}</div><div style="display: flex; flex-direction: column; overflow: hidden;"><span style="color: var(--text-color); font-weight: bold; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${acc.item}</span><span style="color: #888; font-size: 11px;">${displayDate}</span></div></div><div style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; gap: 4px;"><span style="color: ${color}; font-weight: bold; font-size: 16px;">${sign} ¥${amt.toFixed(2)}</span><div style="display: flex; gap: 5px;"><button style="width: auto; padding: 2px 8px; margin: 0; font-size: 11px; background: #f0ad4e; border-radius: 4px;" onclick="editAccounting(${acc.id})">编辑</button><button style="width: auto; padding: 2px 8px; margin: 0; font-size: 11px; background: #c97a7e; border-radius: 4px;" onclick="deleteAccounting(${acc.id})">删除</button></div></div></li>`; }); document.getElementById('stat-in').innerText = `¥${totalIn.toFixed(2)}`; document.getElementById('stat-out').innerText = `¥${totalOut.toFixed(2)}`; const total = totalIn - totalOut; document.getElementById('stat-total').innerText = `¥${total.toFixed(2)}`; document.getElementById('stat-total').style.color = total >= 0 ? '#7eb38a' : '#c97a7e'; lucide.createIcons(); }
 
-    // ================= 美化系统 =================
     function applySavedBeautify() { if (appData.currentWallpaperId) { const wp = appData.wallpapers.find(w => w.id === appData.currentWallpaperId); if(wp) document.documentElement.style.setProperty('--bg-image', `url(${wp.data})`); } else if (appData.wallpaper) { document.documentElement.style.setProperty('--bg-image', `url(${appData.wallpaper})`); } if (appData.widgetBg) { document.documentElement.style.setProperty('--widget-bg', `url(${appData.widgetBg})`); } applyFontToDom(appData.currentFontId); }
     function renderBeautifyLists() { const wpList = document.getElementById('wallpaper-list'); wpList.innerHTML = ''; appData.wallpapers.forEach(wp => { const isActive = appData.currentWallpaperId === wp.id; wpList.innerHTML += `<div class="list-card" style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:10px;"><img src="${wp.data}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;"><span style="color:var(--text-color); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100px;">${wp.name}</span></div><div style="display:flex; gap:5px;"><button style="width:auto; padding:4px 10px; margin:0; font-size:12px; background:${isActive?'#cccccc':'#6b8cce'};" onclick="applyWallpaper(${wp.id})" ${isActive?'disabled':''}>${isActive?'使用中':'应用'}</button><button style="width:auto; padding:4px 10px; margin:0; font-size:12px; background:#c97a7e;" onclick="deleteWallpaper(${wp.id})">删除</button></div></div>`; }); const fontList = document.getElementById('font-list'); fontList.innerHTML = ''; appData.fonts.forEach(f => { const isActive = appData.currentFontId === f.id; fontList.innerHTML += `<div class="list-card" style="display:flex; justify-content:space-between; align-items:center;"><span style="color:var(--text-color); font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:150px;">${f.name}</span><div style="display:flex; gap:5px;"><button style="width:auto; padding:4px 10px; margin:0; font-size:12px; background:${isActive?'#cccccc':'#6b8cce'};" onclick="applyFont(${f.id})" ${isActive?'disabled':''}>${isActive?'使用中':'应用'}</button><button style="width:auto; padding:4px 10px; margin:0; font-size:12px; background:#c97a7e;" onclick="deleteFont(${f.id})">删除</button></div></div>`; }); const isDefaultFont = !appData.currentFontId; fontList.innerHTML += `<div class="list-card" style="display:flex; justify-content:space-between; align-items:center;"><span style="color:var(--text-color); font-size:14px;">系统默认字体</span><button style="width:auto; padding:4px 10px; margin:0; font-size:12px; background:${isDefaultFont?'#cccccc':'#6b8cce'};" onclick="applyFont(null)" ${isDefaultFont?'disabled':''}>${isDefaultFont?'使用中':'应用'}</button></div>`; }
-    function uploadWidgetBg(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { appData.widgetBg = e.target.result; safeSaveData(); applySavedBeautify(); customAlert('卡片底图已更新！'); }; reader.readAsDataURL(file); } }
     function resetWidgetBg() { appData.widgetBg = 'https://i.postimg.cc/VrrxqP0L/image.jpg'; safeSaveData(); applySavedBeautify(); customAlert('已恢复默认卡片底图！'); }
-    function uploadWallpaper(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { appData.wallpapers.push({ id: Date.now(), name: file.name, data: e.target.result }); safeSaveData(); renderBeautifyLists(); }; reader.readAsDataURL(file); } }
     function applyWallpaper(id) { appData.currentWallpaperId = id; safeSaveData(); applySavedBeautify(); renderBeautifyLists(); }
     function deleteWallpaper(id) { appData.wallpapers = appData.wallpapers.filter(w => w.id !== id); if(appData.currentWallpaperId === id) { appData.currentWallpaperId = null; document.documentElement.style.setProperty('--bg-image', `url('https://i.postimg.cc/NLmmGZrM/image.jpg')`); } safeSaveData(); renderBeautifyLists(); }
     function uploadFontFile(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { appData.fonts.push({ id: Date.now(), name: file.name, url: e.target.result }); safeSaveData(); renderBeautifyLists(); }; reader.readAsDataURL(file); } }
@@ -2099,7 +2214,6 @@
     function applyFontToDom(id) { let styleTag = document.getElementById('custom-font-style'); if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'custom-font-style'; document.head.appendChild(styleTag); } if (id) { const font = appData.fonts.find(f => f.id === id); if (font) { styleTag.innerHTML = `@font-face { font-family: 'UserCustomFont'; src: url('${font.url}'); } :root { --font-family: 'UserCustomFont', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }`; return; } } styleTag.innerHTML = `:root { --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }`; }
     function changeTheme(mode) { appData.theme = mode; if(mode === 'dark') { document.documentElement.style.setProperty('--glass-bg', 'rgba(0, 0, 0, 0.4)'); document.documentElement.style.setProperty('--text-color', '#fff'); document.documentElement.style.setProperty('--chat-bg', 'rgba(30, 30, 30, 0.85)'); document.documentElement.style.setProperty('--item-bg', 'rgba(255, 255, 255, 0.1)'); } else { document.documentElement.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.25)'); document.documentElement.style.setProperty('--text-color', '#333'); document.documentElement.style.setProperty('--chat-bg', 'rgba(245, 245, 245, 0.85)'); document.documentElement.style.setProperty('--item-bg', 'rgba(0, 0, 0, 0.05)'); } safeSaveData(); }
 
-    // ================= API、备份 =================
     function submitApi() { const name = document.getElementById('api-name').value.trim(); let url = document.getElementById('api-url').value.trim(); const key = document.getElementById('api-key').value.trim(); const model = document.getElementById('api-model').value.trim() || 'gpt-4o'; const enableVision = document.getElementById('api-vision').checked; if (!name || !url) return customAlert('名称和地址不能为空'); if (url.endsWith('/chat/completions')) url = url.replace('/chat/completions', ''); if (url.endsWith('/')) url = url.slice(0, -1); if (editingApiId) { const index = appData.apis.findIndex(a => a.id === editingApiId); if (index !== -1) appData.apis[index] = { ...appData.apis[index], name, url, key, model, enableVision }; cancelEditApi(); } else { const newApi = { id: Date.now(), name, url, key, model, enableVision }; appData.apis.push(newApi); appData.activeApiId = newApi.id; } safeSaveData(); renderApiList(); }
     function editApi(id) { const api = appData.apis.find(a => a.id === id); if (!api) return; document.getElementById('api-name').value = api.name; document.getElementById('api-url').value = api.url; document.getElementById('api-key').value = api.key; document.getElementById('api-model').value = api.model; document.getElementById('api-vision').checked = api.enableVision || false; editingApiId = id; document.getElementById('api-form-title').innerText = '编辑 API'; document.getElementById('api-submit-btn').innerText = '保存修改'; document.getElementById('api-submit-btn').style.background = '#28a745'; document.getElementById('api-cancel-btn').style.display = 'block'; }
     function cancelEditApi() { editingApiId = null; document.getElementById('api-name').value = ''; document.getElementById('api-url').value = ''; document.getElementById('api-key').value = ''; document.getElementById('api-model').value = ''; document.getElementById('api-vision').checked = false; document.getElementById('api-form-title').innerText = '添加新 API'; document.getElementById('api-submit-btn').innerText = '保存 API'; document.getElementById('api-submit-btn').style.background = '#6b8cce'; document.getElementById('api-cancel-btn').style.display = 'none'; }
@@ -2112,6 +2226,391 @@
     function closeModelModal() { document.getElementById('model-modal').style.display = 'none'; }
     function exportData() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData)); const a = document.createElement('a'); a.href = dataStr; a.download = "aiphone_backup.json"; document.body.appendChild(a); a.click(); a.remove(); }
     function importData(event) { const file = event.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { try { appData = JSON.parse(e.target.result); safeSaveData(); renderUI(); customAlert('数据恢复成功！'); } catch (err) { customAlert('文件格式错误！'); } }; reader.readAsText(file); } }
+
+    // ================= 论坛系统 =================
+    let currentForumPostId = null;
+
+    function openForum() { 
+        openApp('app-forum'); 
+        switchForumTab('home'); 
+    }
+
+    function switchForumTab(tabId) {
+        document.querySelectorAll('.forum-tab-item').forEach(item => item.classList.remove('active'));
+        document.querySelector(`.forum-tab-item[onclick*="${tabId}"]`).classList.add('active');
+        document.querySelectorAll('.forum-content-area').forEach(area => area.classList.remove('active'));
+        document.getElementById(`forum-tab-${tabId}`).classList.add('active');
+        if (tabId === 'home') renderForumHome(); 
+        else if (tabId === 'profile') renderForumProfile();
+        lucide.createIcons();
+    }
+
+    function generateForumPostHTML(post, isDetail = false) {
+        let commentsHtml = ''; 
+        let commentCount = post.comments ? post.comments.length : 0;
+        
+        if (commentCount > 0) {
+            commentsHtml = `<div class="forum-comments-preview">`;
+            // 列表页只展示3条评论，详情页展示所有
+            const displayComments = isDetail ? post.comments : post.comments.slice(0, 3);
+            displayComments.forEach(c => {
+                commentsHtml += `<div class="forum-comment-item"><span class="forum-comment-author">${c.author}:</span> ${c.content}</div>`;
+            });
+            if (!isDetail && commentCount > 3) {
+                commentsHtml += `<div class="forum-comment-more">查看全部 ${commentCount} 条评论 <i data-lucide="chevron-down" style="width:12px;height:12px;vertical-align:middle;"></i></div>`;
+            }
+            commentsHtml += `</div>`;
+        }
+
+        const titleHtml = post.title ? `<div class="forum-post-title">${post.title}</div>` : '';
+        const anonTag = post.isAnonymous ? `<span class="forum-tag-anon">匿名</span>` : '';
+        const likeClass = post.isLiked ? 'liked' : '';
+        const contentClass = isDetail ? 'full' : '';
+        
+        // 如果是详情页，且包含内心活动（发帖时的思考），展示出来（仅上帝视角可见）
+        const thoughtsHtml = (isDetail && post.innerThoughts) ? `<div class="forum-thoughts"><b>[上帝视角/发帖动机]</b> ${post.innerThoughts}</div>` : '';
+
+        // 绑定点击事件，列表页点击进入详情
+        const clickEvent = isDetail ? '' : `onclick="openForumDetail(${post.id})"`;
+
+        return `
+            <div class="forum-post" id="forum-${post.id}">
+                <div ${clickEvent}>
+                    <div class="forum-post-header">
+                        <img class="forum-post-avatar" src="${post.avatar}">
+                        <div>
+                            <div class="forum-post-name">${post.author} ${anonTag}</div>
+                            <div class="forum-post-time">${post.time || '刚刚'}</div>
+                        </div>
+                    </div>
+                    ${titleHtml}
+                    ${thoughtsHtml}
+                    <div class="forum-post-content ${contentClass}">${post.content}</div>
+                </div>
+                ${commentsHtml}
+                <div class="forum-post-footer">
+                    <div class="forum-action-btn ${likeClass}" onclick="toggleLikeForum(${post.id}, event)">
+                        <i data-lucide="thumbs-up"></i> <span id="forum-like-count-${post.id}">${post.likes || 0}</span>
+                    </div>
+                    <div class="forum-action-btn" ${clickEvent}>
+                        <i data-lucide="message-square"></i> ${commentCount}
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function renderForumHome() {
+        const list = document.getElementById('forum-home-list');
+        if (!appData.forum.posts || appData.forum.posts.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:#888; margin-top:30px;">暂无帖子，点击右上角刷新看看</p>';
+            return;
+        }
+        let html = '';
+        appData.forum.posts.forEach(post => { html += generateForumPostHTML(post, false); });
+        list.innerHTML = html;
+        lucide.createIcons();
+    }
+
+    function renderForumProfile() {
+        document.getElementById('forum-my-avatar').src = appData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix';
+        document.getElementById('forum-my-nickname').innerText = appData.weibo.nickname || '我';
+        document.getElementById('forum-stat-posts').innerText = appData.forum.myPosts.length;
+        
+        let totalLikes = 0;
+        appData.forum.myPosts.forEach(p => totalLikes += (p.likes || 0));
+        document.getElementById('forum-stat-replies').innerText = totalLikes;
+
+        const list = document.getElementById('forum-my-posts');
+        if (!appData.forum.myPosts || appData.forum.myPosts.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:#888; margin-top:30px;">你还没有发过贴，点击右下角发布</p>';
+            return;
+        }
+        let html = '';
+        [...appData.forum.myPosts].reverse().forEach(post => { html += generateForumPostHTML(post, false); });
+        list.innerHTML = html;
+        lucide.createIcons();
+    }
+
+    function toggleLikeForum(id, event) {
+        if(event) event.stopPropagation(); // 阻止事件冒泡到帖子详情
+        let post = appData.forum.posts.find(p => p.id === id) || appData.forum.myPosts.find(p => p.id === id);
+        if (post) {
+            post.isLiked = !post.isLiked;
+            post.likes = (post.likes || 0) + (post.isLiked ? 1 : -1);
+            safeSaveData();
+            document.getElementById(`forum-like-count-${id}`).innerText = post.likes;
+            const btn = event.currentTarget;
+            if(post.isLiked) btn.classList.add('liked'); else btn.classList.remove('liked');
+        }
+    }
+
+    function openForumDetail(id) {
+        currentForumPostId = id;
+        const post = appData.forum.posts.find(p => p.id === id) || appData.forum.myPosts.find(p => p.id === id);
+        if (!post) return;
+        
+        const contentArea = document.getElementById('forum-detail-content');
+        contentArea.innerHTML = generateForumPostHTML(post, true);
+        
+        // 如果是我发的贴，显示删除按钮
+        const isMyPost = appData.forum.myPosts.some(p => p.id === id);
+        document.getElementById('forum-detail-del-btn').style.display = isMyPost ? 'block' : 'none';
+        
+        document.getElementById('app-forum-detail').classList.add('active');
+        lucide.createIcons();
+    }
+
+    function closeForumDetail() {
+        document.getElementById('app-forum-detail').classList.remove('active');
+        currentForumPostId = null;
+        if (document.getElementById('forum-tab-home').classList.contains('active')) renderForumHome();
+        else renderForumProfile();
+    }
+
+    function deleteCurrentForumPost() {
+        if (!currentForumPostId) return;
+        if (confirm("确定要删除这条帖子吗？")) {
+            appData.forum.myPosts = appData.forum.myPosts.filter(p => p.id !== currentForumPostId);
+            appData.forum.posts = appData.forum.posts.filter(p => p.id !== currentForumPostId);
+            safeSaveData();
+            closeForumDetail();
+            customAlert("帖子已删除");
+        }
+    }
+
+    // --- 核心：刷新并使用 API 生成论坛帖子 ---
+    async function refreshForumPosts() {
+        const activeApi = appData.apis.find(a => a.id === appData.activeApiId); 
+        if (!activeApi) return customAlert('请先在 API 设置中配置并选中一个 API。');
+        
+        const btn = document.getElementById('btn-refresh-forum'); 
+        btn.classList.add('disabled'); btn.innerText = '刷新中...';
+
+        // 随机抽取1-2个角色提供给AI，让AI决定是否用他们发帖
+        const singleChars = appData.characters.filter(c => !c.isGroup);
+        const shuffled = [...singleChars].sort(() => 0.5 - Math.random()); 
+        const selectedChars = shuffled.slice(0, Math.min(2, shuffled.length));
+        
+        let charContexts = selectedChars.map(c => {
+            let context = `角色名：${c.name}\n人设：${c.prompt.substring(0, 300)}...`;
+            if (c.longTermMemory) context += `\n与用户的共同记忆：${c.longTermMemory}`;
+            return context;
+        }).join('\n\n');
+
+        const myName = appData.weibo.nickname || '我';
+        
+        const prompt = `你是一个论坛帖子生成器。请生成1到3个有趣的论坛帖子。
+当前看帖的用户设定：名字叫[${myName}]。
+你可以使用以下角色作为发帖人或评论者（也可以编造路人NPC）：
+${charContexts ? charContexts : '无特殊角色'}
+
+要求：
+1. 帖子可以是日常吐槽、求助、八卦、或者是与用户[${myName}]相关的事情。
+2. 帖子可以是实名发布，也可以是“匿名”或“小号”。
+3. 如果是上面提供的角色发帖，请严格遵循TA的人设、记忆。并在 "innerThoughts" 字段中写下TA【为什么要发这个帖子】的真实心理活动。
+4. **每个帖子必须包含至少 10 条评论**。评论区要像真实的论坛一样，有沙发、吃瓜群众、楼主回复、甚至角色之间的互动。
+5. 严格返回 JSON 数组，格式如下（不要包含其他Markdown代码）：
+[
+  {
+    "author": "发帖人显示的昵称",
+    "avatar": "填入 https://api.dicebear.com/7.x/bottts/svg?seed=随机词汇",
+    "isAnonymous": true或false,
+    "title": "帖子标题",
+    "content": "帖子正文",
+    "innerThoughts": "如果是角色发的，写出真实想法；如果是路人，填空字符串",
+    "comments": [
+      {"author": "评论者A", "content": "评论内容"},
+      {"author": "评论者B", "content": "评论内容"}
+    ]
+  }
+]`;
+
+        try {
+            let apiUrl = activeApi.url; 
+            if (!apiUrl.endsWith('/chat/completions')) { if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1); apiUrl += '/chat/completions'; }
+            
+            const response = await fetch(apiUrl, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApi.key}` }, 
+                body: JSON.stringify({ model: activeApi.model, messages: [{ role: 'user', content: prompt }] }) 
+            });
+            const data = await response.json();
+            
+            if (data.choices && data.choices.length > 0) {
+                const parsed = extractJSON(data.choices[0].message.content);
+                if (parsed && Array.isArray(parsed)) {
+                    // 处理数据，生成 ID 和 默认点赞数
+                    const newPosts = parsed.map(p => ({
+                        id: Date.now() + Math.floor(Math.random() * 10000),
+                        author: p.author || '匿名网友',
+                        avatar: p.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${Math.random()}`,
+                        isAnonymous: p.isAnonymous || false,
+                        title: p.title || '',
+                        content: p.content || '',
+                        innerThoughts: p.innerThoughts || '',
+                        time: '刚刚',
+                        likes: Math.floor(Math.random() * 500),
+                        isLiked: false,
+                        comments: p.comments || []
+                    }));
+                    
+                    // 将新帖子加到前面，保留最多30条缓存
+                    appData.forum.posts = [...newPosts, ...appData.forum.posts].slice(0, 30);
+                    safeSaveData();
+                    showNotification('论坛', '首页帖子已刷新', 'https://api.dicebear.com/7.x/shapes/svg?seed=forum');
+                    renderForumHome();
+                }
+            }
+        } catch (error) { 
+            console.error("论坛帖子生成失败", error); 
+            customAlert('刷新失败，请检查 API 设置。');
+        } finally { 
+            btn.classList.remove('disabled'); 
+            btn.innerHTML = '<i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> 刷新'; 
+            lucide.createIcons(); 
+        }
+    }
+
+    // --- 用户自己发帖 ---
+    function openNewForumPostModal() {
+        document.getElementById('forum-post-title').value = '';
+        document.getElementById('forum-post-input').value = '';
+        document.getElementById('forum-post-anon').checked = false;
+        document.getElementById('forum-post-modal').classList.add('active');
+    }
+
+    function closeNewForumPostModal() {
+        document.getElementById('forum-post-modal').classList.remove('active');
+    }
+
+    function submitForumPost() {
+        const title = document.getElementById('forum-post-title').value.trim();
+        const content = document.getElementById('forum-post-input').value.trim();
+        const isAnon = document.getElementById('forum-post-anon').checked;
+        
+        if (!content) return customAlert('帖子内容不能为空');
+
+        const newPost = {
+            id: Date.now(),
+            author: isAnon ? '某不愿透露姓名的网友' : (appData.weibo.nickname || '我'),
+            avatar: isAnon ? 'https://api.dicebear.com/7.x/bottts/svg?seed=anon' : (appData.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'),
+            isAnonymous: isAnon,
+            title: title,
+            content: content,
+            time: '刚刚',
+            likes: 0,
+            isLiked: false,
+            comments: []
+        };
+
+        appData.forum.myPosts.unshift(newPost);
+        // 也加入到首页大厅中
+        appData.forum.posts.unshift(newPost);
+        safeSaveData();
+        closeNewForumPostModal();
+        renderForumProfile();
+        customAlert('发布成功！');
+        
+        // 触发 API 给用户的帖子生成初始评论
+        generateRepliesToUserPost(newPost.id);
+    }
+
+    async function generateRepliesToUserPost(postId) {
+        const activeApi = appData.apis.find(a => a.id === appData.activeApiId); 
+        if (!activeApi) return;
+        
+        const post = appData.forum.myPosts.find(p => p.id === postId);
+        if (!post) return;
+
+        let charNames = appData.characters.filter(c=>!c.isGroup).map(c => c.name).join('、');
+        
+        const prompt = `用户在论坛发布了一条新帖。
+标题：${post.title}
+内容：${post.content}
+发布状态：${post.isAnonymous ? '匿名' : '实名'}
+
+请模拟论坛网友（路人NPC）或以下角色（${charNames || '无'}）对这个帖子进行回复。
+要求：
+1. 生成 5 到 10 条评论。
+2. 严格返回 JSON 数组格式：[{"author": "昵称", "content": "评论内容"}]`;
+
+        try {
+            let apiUrl = activeApi.url; 
+            if (!apiUrl.endsWith('/chat/completions')) { if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1); apiUrl += '/chat/completions'; }
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApi.key}` }, body: JSON.stringify({ model: activeApi.model, messages: [{ role: 'user', content: prompt }] }) });
+            const data = await response.json();
+            if (data.choices && data.choices.length > 0) {
+                const parsed = extractJSON(data.choices[0].message.content);
+                if (parsed && Array.isArray(parsed)) { 
+                    post.comments = parsed; 
+                    safeSaveData(); 
+                    showNotification('论坛', '你的帖子有了新回复', 'https://api.dicebear.com/7.x/shapes/svg?seed=forum'); 
+                    if (currentForumPostId === postId) {
+                        openForumDetail(postId); // 刷新详情页
+                    }
+                }
+            }
+        } catch (error) { console.error("生成帖子评论失败", error); }
+    }
+
+    // --- 用户评论及 API 互动回复 ---
+    async function submitForumComment() {
+        const input = document.getElementById('forum-comment-input');
+        const text = input.value.trim();
+        if (!text || !currentForumPostId) return;
+
+        const post = appData.forum.posts.find(p => p.id === currentForumPostId) || appData.forum.myPosts.find(p => p.id === currentForumPostId);
+        if (!post) return;
+
+        if (!post.comments) post.comments = [];
+        const myName = appData.weibo.nickname || '我';
+        
+        post.comments.push({ author: myName, content: text });
+        input.value = '';
+        safeSaveData();
+        
+        // 刷新详情页视图
+        openForumDetail(currentForumPostId);
+        
+        // 触发 API 生成对用户评论的回复
+        generateReplyToUserComment(post, text);
+    }
+
+    async function generateReplyToUserComment(post, userComment) {
+        const activeApi = appData.apis.find(a => a.id === appData.activeApiId); 
+        if (!activeApi) return;
+
+        const myName = appData.weibo.nickname || '我';
+        const previousComments = post.comments.slice(-5).map(c => `${c.author}: ${c.content}`).join('\n');
+
+        const prompt = `在论坛的一个帖子里，用户（${myName}）刚刚发表了一条评论。
+【原贴标题】：${post.title}
+【原贴内容】：${post.content}
+【原贴作者】：${post.author}
+【近期评论上下文】：
+${previousComments}
+
+请模拟楼主、原帖相关的角色、或者吃瓜网友，针对用户的新评论（"${userComment}"）生成 1 到 3 条互动回复。
+要求：严格返回 JSON 数组格式：[{"author": "回复者昵称", "content": "回复内容"}]`;
+
+        try {
+            let apiUrl = activeApi.url; 
+            if (!apiUrl.endsWith('/chat/completions')) { if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1); apiUrl += '/chat/completions'; }
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${activeApi.key}` }, body: JSON.stringify({ model: activeApi.model, messages: [{ role: 'user', content: prompt }] }) });
+            const data = await response.json();
+            if (data.choices && data.choices.length > 0) {
+                const parsed = extractJSON(data.choices[0].message.content);
+                if (parsed && Array.isArray(parsed)) { 
+                    post.comments.push(...parsed);
+                    safeSaveData(); 
+                    showNotification('论坛', '有人回复了你的评论', 'https://api.dicebear.com/7.x/shapes/svg?seed=forum'); 
+                    if (currentForumPostId === post.id) {
+                        openForumDetail(post.id); // 刷新详情页
+                    }
+                }
+            }
+        } catch (error) { console.error("生成互动回复失败", error); }
+    }
 
     init();
 </script>
