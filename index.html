@@ -21,17 +21,19 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-family); -webkit-tap-highlight-color: transparent; }
 
-        body { 
+        html, body { 
             margin: 0; 
             padding: 0; 
-            width: 100vw; 
-            height: 100vh; 
+            width: 100%; 
+            /* 核心修复：使用动态高度适配移动端 */
+            height: 100vh; /* 旧版备用 */
+            height: 100dvh; /* 现代浏览器动态高度 */
+            min-height: -webkit-fill-available; /* 苹果 Safari 专属修复 */
+            
             background-color: #000; 
-            /* 把壁纸直接贴在最底层的 body 上 */
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            background-attachment: fixed; 
             overflow: hidden; 
         }
 
@@ -101,7 +103,22 @@
         .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.3s; }
         .dot.active { background: rgba(255,255,255,0.9); }
 
-        .dock { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; height: 80px; border-radius: 25px; display: flex; justify-content: space-around; align-items: center; padding: 0 10px; z-index: 20; }
+        .dock { 
+            position: absolute; 
+            /* 核心修复：加上 env(safe-area-inset-bottom) 避开底部小白条 */
+            bottom: calc(20px + env(safe-area-inset-bottom)); 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            height: 80px; 
+            border-radius: 25px; 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            padding: 0 10px; 
+            z-index: 20; 
+        }
+
         .dock .app-icon { width: 60px; height: 60px; }
 
         .badge { position: absolute; background: #ff3b30; color: white; font-size: 10px; font-weight: bold; border-radius: 10px; padding: 2px 6px; min-width: 18px; text-align: center; line-height: 1.2; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10; pointer-events: none; }
